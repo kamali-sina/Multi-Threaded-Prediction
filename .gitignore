@@ -1,6 +1,13 @@
 # Prerequisites
 *.d
 
+# Project files
+
+Data/
+./serial/bulid
+./parallel/bulid
+.vscode
+
 # Object files
 *.o
 *.ko
