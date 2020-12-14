@@ -1,31 +1,23 @@
-CC := g++ -std=c++11
+CC := g++ -std=c++11 -pthread
 CCFLAGS += -l SDL2 -l SDL2_image -l SDL2_ttf -l SDL2_mixer
 
 BUILD_DIR=build
 
-all: StoreCalculator.out
+all: PhonePricePrediction.out
 
-StoreCalculator.out: rm mk ${BUILD_DIR}/main.o ${BUILD_DIR}/parser.o ${BUILD_DIR}/forker.o
-	$(CC) ${BUILD_DIR}/main.o ${BUILD_DIR}/parser.o ${BUILD_DIR}/forker.o -o ./StoreCalculator.out
+PhonePricePrediction.out: rm mk ${BUILD_DIR}/main.o
+	$(CC) ${BUILD_DIR}/main.o -o ./PhonePricePrediction.out
 
-${BUILD_DIR}/main.o: parser.hpp main.cpp
+${BUILD_DIR}/main.o: main.cpp
 	$(CC) -c main.cpp -o ${BUILD_DIR}/main.o
-
-${BUILD_DIR}/parser.o: parser.cpp
-	$(CC) -c parser.cpp -o ${BUILD_DIR}/parser.o
-
-${BUILD_DIR}/forker.o: parser.hpp forker.cpp
-	$(CC) -c forker.cpp -o ${BUILD_DIR}/forker.o
-
 
 mk:
 	mkdir ./${BUILD_DIR}
-	mkdir ./namedpipes
 
 rm:
-	rm -rf ${BUILD_DIR}/ ./StoreCalculator.out namedpipes
+	rm -rf ${BUILD_DIR}/ ./PhonePricePrediction.out
 .PHONY: clean
 clean:
-	rm -rf ${BUILD_DIR}/*o ./StoreCalculator.out result.out
+	rm -rf ${BUILD_DIR}/ ./PhonePricePrediction.out
 run: StoreCalculator.out
 	./StoreCalculator.out ./commands.txt assets
