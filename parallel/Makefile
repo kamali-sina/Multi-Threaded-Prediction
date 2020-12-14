@@ -11,6 +11,14 @@ PhonePricePrediction.out: rm mk ${BUILD_DIR}/main.o
 ${BUILD_DIR}/main.o: main.cpp
 	$(CC) -c main.cpp -o ${BUILD_DIR}/main.o
 
+alter: hojo.out
+
+hojo.out: rm mk ${BUILD_DIR}/main_alter.o
+	$(CC) ${BUILD_DIR}/main_alter.o -o ./PhonePricePrediction.out
+
+${BUILD_DIR}/main_alter.o: main_alter.cpp
+	$(CC) -c main_alter.cpp -o ${BUILD_DIR}/main_alter.o
+
 mk:
 	mkdir ./${BUILD_DIR}
 
