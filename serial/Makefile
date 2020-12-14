@@ -25,6 +25,6 @@ rm:
 	rm -rf ${BUILD_DIR}/ ./PhonePricePrediction.out
 .PHONY: clean
 clean:
-	rm -rf ${BUILD_DIR}/*o ./StoreCalculator.out result.out
+	rm -rf ${BUILD_DIR}/ ./PhonePricePrediction.out
 run: StoreCalculator.out
 	./StoreCalculator.out ./commands.txt assets
