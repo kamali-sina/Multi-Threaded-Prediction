@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <time.h>
 #include "parser.hpp"
 #include "regression.hpp"
 
@@ -27,10 +28,37 @@ int main (int argc, char *argv[])
 	}
 	string trainPath = (string)argv[1] + TRAINPOSTFIX;
 	string weightsPath = (string)argv[1] + WEIGHTSPOSTFIX;
+	// clock_t start, end;
+	// double cpu_time_used;
+	// start = clock();
+
 	vector<vector<double>> trainCsv = parse_file(trainPath);
+
+	// end = clock();
+	// cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	// cout<<"time of parsing traincsv: "<<cpu_time_used<<" seconds"<<endl;
+	// start = clock();
+
 	vector<vector<double>> weightsCsv = parse_file(weightsPath);
+
+	// end = clock();
+	// cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	// cout<<"time of parsing weightscsv: "<<cpu_time_used<<" seconds"<<endl;
+	// start = clock();
+
 	vector<vector<double>> minMaxs = getMinMaxs(trainCsv);
+
+	// end = clock();
+	// cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	// cout<<"time of making minmaxs: "<<cpu_time_used<<" seconds"<<endl;
+	// start = clock();
+
 	float accuracy = runRegression(trainCsv, minMaxs, weightsCsv);
+
+	// end = clock();
+	// cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	// cout<<"time of running regression: "<<cpu_time_used<<" seconds"<<endl;
+	// start = clock();
 	cout<<"Accuracy: "<<accuracy<<"%"<<endl;
 	return 0;
 }
