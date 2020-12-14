@@ -12,14 +12,14 @@
 using namespace std;
 
 #define NUMBER_OF_THREADS 10
-#define TRAINPOSTFIX "/train.csv"
+#define TRAINPOSTFIX "/train_"
 #define WEIGHTSPOSTFIX "/weights.csv"
 #define MIN 0
 #define MAX 1
 pthread_t threads[NUMBER_OF_THREADS];
 pthread_mutex_t mutex_tillregre;
 pthread_mutex_t mutex_regre;
-vector<vector<string>> trainCsv_string;
+string trainPath;
 vector<vector<double>> data;
 vector<vector<double>> weights;
 vector<vector<double>> minMaxs;
@@ -46,13 +46,13 @@ int main (int argc, char *argv[])
 		printf("Usage: ./PhonePricePrediction.out <pathToData>");
 		exit(0);
 	}
-	string trainPath = (string)argv[1] + TRAINPOSTFIX;
+	trainPath = (string)argv[1] + TRAINPOSTFIX;
 	string weightsPath = (string)argv[1] + WEIGHTSPOSTFIX;
 	pthread_mutex_init(&mutex_tillregre, NULL);
     pthread_mutex_init(&mutex_regre, NULL);
 
 	weights = parse_file(weightsPath);
-	trainCsv_string = read_csv(trainPath);
+	// trainCsv_string = read_csv(trainPath);
 	for(long i = 0; i < NUMBER_OF_THREADS; i++)
 		pthread_create(&threads[i], NULL, untillRegression, (void*)i); 
 
@@ -68,7 +68,7 @@ int main (int argc, char *argv[])
 	for(long i = 0; i < NUMBER_OF_THREADS; i++)
 		pthread_join(threads[i], NULL);
     
-    float accuracy = (float)correctSum / (float)trainCsv_string.size();
+    float accuracy = (float)correctSum / (float)data.size();
     float rounded_down = floorf(accuracy * 10000) / 100;
     cout<<"Accuracy: "<<rounded_down<<"%"<<endl;
 
@@ -161,15 +161,8 @@ void updateMinMax(vector<vector<double>> localMinMax){
 
 void* untillRegression(void* arg){
 	long index = (long)arg;
-	int part = trainCsv_string.size() / NUMBER_OF_THREADS;
-    vector<vector<double>> mData;
-    for (int i = index*part; i < (index+1)*part ; i++){
-        vector<double> line;
-        for (int j = 0; j < trainCsv_string[i].size(); j++){
-            line.push_back(stof(trainCsv_string[i][j]));
-        }
-        mData.push_back(line);
-    }
+	string path = trainPath + to_string(index) + ".csv";
+    vector<vector<double>> mData = parse_file(path);
     vector<vector<double>> Mminmaxs = getMinMaxs(mData);
 
     pthread_mutex_lock (&mutex_tillregre);
@@ -215,7 +208,7 @@ int run_one_line(vector<double> csv){
 
 void* regression(void* arg){
     long index = (long)arg;
-	int part = trainCsv_string.size() / NUMBER_OF_THREADS;
+	int part = data.size() / NUMBER_OF_THREADS;
     int mysum = 0;
     for (int i = index*part; i < (index+1)*part ; i++){
         mysum += run_one_line(data[i]);
