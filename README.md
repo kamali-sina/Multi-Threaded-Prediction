@@ -9,6 +9,6 @@ There are two methods of prediction available in the repo. Serial prediction and
 
 To use the project, navigate to any of the available folders and run the following:
 
-  make
-  ./PhonePricePrediction.out
+    make
+    ./PhonePricePrediction.out
 
