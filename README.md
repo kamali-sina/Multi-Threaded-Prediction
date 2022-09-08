@@ -1,5 +1,5 @@
 # Multi-Threaded-Prediction
-A multi-threaded C program that predicts prices based of the trained regression data
+A multi-threaded C program that predicts prices based on trained regression data. This project illustrates the effects of parallelizing programs to achieve maximum efficiency.
 
 ## Description
 
